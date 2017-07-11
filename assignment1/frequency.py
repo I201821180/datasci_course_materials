@@ -1,0 +1,30 @@
+import sys
+import json
+
+def hw(tweet_file):
+    terms = {} # initialize an empty dictionary
+    total_terms = 0
+    for line in tweet_file:
+        tweet = json.loads(line)
+        if 'text' not in tweet: 
+            continue
+        for word in tweet['text'].split():
+            if word in terms: terms[word] += 1
+            else: terms[word] = 1
+            total_terms +=1
+
+    for t in terms:
+        print t, float(terms[t])/total_terms
+
+
+
+def lines(fp):
+    print str(len(fp.readlines()))
+
+def main():
+    tweet_file = open(sys.argv[1])
+    hw(tweet_file)
+    tweet_file.close()
+
+if __name__ == '__main__':
+    main()
