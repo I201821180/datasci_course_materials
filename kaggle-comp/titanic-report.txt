@@ -1,0 +1,49 @@
+
+
+
+==============================================
+Part 1: Problem Description. Give the name of the competition you selected and write a few sentences describing the competition problem as you interpreted it. You want your writeup to be self-contained so your peer-reviewer does not need to go to Kaggle to study the competition description. Clarity is more important than detail. What's the overall goal? What does the data look like? How will the results be evaluated?
+==============================================
+
+
+I entered the Titanic survivorship competition. The task is to predict whether a given passenger survived the sinking of the Titanic based on various attributes including: sex, age, class, ticket fare, number of family members onbard. We are given a file containing these attributes for 891 passengers, plus whether the passenger survived or not. This is our training data. We are also given a file containing the attributes of 418 passengers, without survivorship knowledge. This is our test data. Solutions are evaluated by predicting survivorship on the test data, creating a file with the predictions and submitting the file to Kaggle. Kaggle then produces an accuracy score which is the fraction of correct answers in our predictions.
+
+
+==============================================
+Part 2: Analysis Approach. Write a few sentences describing how you approached the problem. What techniques did you use? Clarity is more important than technical depth in this exercise.
+HINT: Favor simple approaches over complex approaches. The idea is to get a good, simple, comprehensible solution rather than try to impress people with how smart you are. Start small, and improve your solution incrementally -- don't try to save the world, boil the ocean, or any other hyperbolic metaphors.
+Example: "I split the data by gender and handled each class separately. For the females, I trivially classified all of them as "survived." For the males, I trained a random forest as a classifier. I ignored the pclass atribute that indicated the location of the passenger's cabin because I didn't think it was relevant."
+==============================================
+
+I used R and its libraries to apply various machine learning classification algorithms on the training data and predict the test data. I started with a decision tree, and then I moved to SVM and random forest. From the 11 attributes given per passenger, I decided that only 6 were important/relevant to the problem: Sex, Age, Class, Ticket fare, No of siblings or spouse, No of parents or children. The 5 attributes not used: ID, Name, Ticket no, Cabin, Embarkation port. The Cabin information could have been of interest but unfortunately 80% of the values were missing, making it unusable. The issue of missing values was an important one, as it affected attributes that I chose to use, especially Age.
+
+
+
+==============================================
+Part 3: Initial Solution. Write a few sentences describing how you implemented your approach. Think of it as a whiteboard conversation or a descriptive forum post rather than a full technical report. Try to provide enough detail for someone with some experience to follow your recipe and reproduce your results: Describe how you prepared the data, the method(s) you applied, and any tools you used (not detailed code). What languages and libraries did you use? What challenges did you run into?
+Example: "I partitioned the data by gender manually using Excel. I used Weka to build the random forest."
+==============================================
+
+My initial solution involved a simple decision tree. This was implemented using R's library rpart. As mentioned, some atttribute values were missing for some passengers (about 20% of Age info was missing). My first reaction was to remove these passengers before training the decision tree. I was left with 714 passengers. I also converted the Survived attribute, and the Class attribute to factors (distinct levels, as opposed to numeric values). I trained the model, made the predictions on the test data and created a cvs file according to spec to submit to Kaggle. 
+
+
+==============================================
+Part 4: Initial Solution Analysis. Write a few sentences assessing your approach. Did it work? What do you think the problems were?
+Example: "My approach did not work so well, achieving a score of 0.65. This is less than the sample solution. I suspect I should not have ignored the pclass attribute."
+==============================================
+
+The accuracy returned by Kaggle on my first decision tree was 0.785. A good start, I thought, as I believed (naively) that it would be easy to improve upon. I also inspected some properties of the decision tree, for example what are the most important attributes. As expected Sex was the most important, followed by Class and Fare.
+
+
+
+==============================================
+Part 5: Revised Solution and Analysis. Write a few sentences describing how you improved on your solution, and whether or not it worked.
+Example: "I included the pclass attribute and ignored the ticket number attribute. My score improved to 0.68."
+==============================================
+
+I then decided to train the decision tree using all the data (even the ones with missing values). From documentation, I learned that decision trees (and the rpart library in particular) can handle missing variables well. This proved to be true, as my accuracy improve to 0.794. I was impressed by this. I then moved on to apply more advanced training models, such as SVM and random forest. The issue was that these models do not handle missing data well. You can train them with fewer data (after you removed passengers with missing info) but then on the testing data you still have missing info and you have to predict something, you cannot ignore these. I tried several techniques to address the issue. One was to drop Age as an attribute that the classifier would consider. This did not work as well (accuracy result 0.775). Then I decided to combine the answers from the SVM and the decision tree. More specifically, I used the SVM answers as a starting point and if an answer was not available for a particular passenger, I used the answer from the decision tree. This all did not improve my accuracy (again returned 0.775). I also tried to impute the data using the randomForest rfImpute function, and then train a random forest This again did not yield any better results. Finally, I trained an SVM model with imputed data and I filled in the missing passengers by guessing they did not survived. This yielded a slightly better accuracy of 0.799. I will keep exploring different approaches to increase my accuracy. This project certainly taught me the importance of missing data.
+
+
+
+
+
