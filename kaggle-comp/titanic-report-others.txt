@@ -1,0 +1,34 @@
+
+Titanic - Others solutions
+=========================================================
+
+The bar chart below shows that females had a greater probability of being survived. As it can be seen from below diagram, the probability of survival for females is more than 74% and for males is almost 19%. So, simply predicting survived by using sex of passengers can form an initial solution.
+
+https://www.dropbox.com/s/875uw8iiou2eqff/bar%20Chart.jpg?dl=0
+
+Sex
+Probability of survival
+
+female. 0.742038
+male 0.188908
+
+
+I simply used survival coded as the gender of the passengers. I did this by mapping tool in panda library in Python. The initial solution score is 0.76555. 
+
+For revising the solution analysis, I have analyzed more variables. As it can make more sense, the Ticket class as a proxy of the Social-Economic status of passengers was another major determinant of being survived. As it can be found in the following diagram, first class passengers had more probability to survive, then second-class and third-class passengers respectively.
+
+https://www.dropbox.com/s/gftje0y7tztcx7j/PClass.jpg?dl=0
+
+Moreover, among numerical variables, the ticket class, number of siblings, number of parents, being female and male of the passengers can determine the probability of survival. The following diagram shows the correlation coefficients of the above variables.
+
+https://www.dropbox.com/s/pvu8ecofp05emi4/correlation%20coefficients.jpg?dl=0
+
+The following diagram shows the relation between the ticket class and age, with either survived and not survived categorization.
+
+https://www.dropbox.com/s/lpop9nyo6s4dgr0/age%20and%20PClass.jpg?dl=0
+
+
+I used the logistics regression approach on the train data, to determine the predicted values for the test data. The variables used for regression are the ones that found important in the previous section: the ticket class, the number of siblings, number of parents, being female and male of the passengers. First, the coefficients of these variables have been determined by running the logistics regression on the train data. Then, the fitted values have been found by using the coefficients in the first stage on the test data. The score on the train data has been increased to 80.019 and the score on the train data has been increased to 78.04. 
+
+==================================================
+

@@ -12,6 +12,7 @@ train_clean <- train_raw[rowSums(is.na(train_raw)) == 0,]
 # train_clean <- train_clean[, c(-1,-4,-9)]
 
 
+
 # get the test data
 test_raw = read.csv(file="test.csv", header=TRUE,sep=",")
 # There are 86 rows with no Age data (NA), but do not remove them
@@ -20,6 +21,13 @@ test_raw$Pclass <- as.factor(test_raw$Pclass)
 
 
 # The is NO file with the ground truth! (initially I thought it was gender_submission.csv)
+
+
+# Quickly inspect multidimentional data, by creating all pair plots (pairs of every dimension/feature)
+# Here I am interesing only in Pclass, Sex, Age, Parch, Psib, Fare
+# The color that the points are drawn is the outcome variable Survived.
+pairs(train_clean[,c('Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare')], col=train_clean$Survived)
+
 
 
 fol <- formula(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare)
